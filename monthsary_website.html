@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Monthsary ❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fecfef);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(14px);
+      border-radius: 30px;
+      padding: 45px 40px;
+      max-width: 560px;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 1.5s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-weight: 300;
+      font-size: 1.1rem;
+      margin-bottom: 22px;
+    }
+
+    .heart {
+      font-size: 4rem;
+      animation: pulse 1.2s infinite;
+      margin: 15px 0 25px;
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 25px;
+    }
+
+    .counter {
+      font-size: 1.15rem;
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+
+    button {
+      background: #ff4d6d;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 40px;
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+    }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.05);
+      background: #ff3355;
+    }
+
+    .hidden-message {
+      display: none;
+      margin-top: 28px;
+      font-style: italic;
+      animation: fadeIn 1s ease;
+      white-space: pre-line;
+    }
+
+    .floating-hearts span {
+      position: absolute;
+      bottom: -40px;
+      font-size: 22px;
+      animation: floatUp 8s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 0.7; }
+      to { transform: translateY(-120vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="floating-hearts">
+    <span style="left: 10%; animation-delay: 0s;">❤️</span>
+    <span style="left: 25%; animation-delay: 2s;">💕</span>
+    <span style="left: 45%; animation-delay: 4s;">💖</span>
+    <span style="left: 65%; animation-delay: 1s;">❤️</span>
+    <span style="left: 85%; animation-delay: 3s;">💕</span>
+  </div>
+
+  <div class="card">
+    <h1>Happy Monthsary</h1>
+    <h2>Another month loving you 💕</h2>
+
+    <div class="heart">❤️</div>
+
+    <p>
+      Every month with you feels like a small celebration of love.
+      Thank you for choosing me, for loving me, and for making ordinary days feel special.
+    </p>
+
+    <div class="counter" id="counter"></div>
+
+    <button onclick="showLove()">Read My Message</button>
+
+    <p class="hidden-message" id="loveMessage">
+      Another month has passed with you,
+	And still my heart feels brand new.
+	In quiet smiles and late-night talks,
+	In every step, in all our walks.
+
+	We’re not perfect, that much is true,
+	But love feels easy when it’s you.
+	Through simple days and stormy weather,
+	I’d choose this life, us, always—together.
+
+	So here’s my heart, month after month,
+	In every now, in every “once.”
+	Happy monthsary, my love so true,
+	Every tomorrow starts with you. 💖 💖
+    </p>
+  </div>
+
+  <script>
+    // CHANGE THIS TO YOUR START DATE (YYYY, MM-1, DD)
+    const startDate = new Date(2026, 1, 01);
+
+    function updateCounter() {
+      const now = new Date();
+
+      let months = (now.getFullYear() - startDate.getFullYear()) * 12;
+      months += now.getMonth() - startDate.getMonth();
+
+      if (now.getDate() < startDate.getDate()) {
+        months--;
+      }
+
+      document.getElementById('counter').innerHTML =
+        `We’ve been together for <strong> ${months} </strong> month(s). ❤️`;
+    }
+
+    function showLove() {
+      document.getElementById('loveMessage').style.display = 'block';
+    }
+
+    updateCounter();
+  </script>
+</body>
+</html>
