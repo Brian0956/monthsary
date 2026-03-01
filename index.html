@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Happy Monthsary ❤️</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
   <style>
     * {
       margin: 0;
@@ -67,12 +68,19 @@
       font-weight: 500;
     }
 
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
     button {
       background: #ff4d6d;
       border: none;
-      padding: 14px 36px;
+      padding: 12px 24px;
       border-radius: 40px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: #fff;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -86,7 +94,7 @@
 
     .hidden-message {
       display: none;
-      margin-top: 28px;
+      margin-top: 25px;
       font-style: italic;
       animation: fadeIn 1s ease;
       white-space: pre-line;
@@ -119,6 +127,11 @@
 </head>
 <body>
 
+  <!-- 🎵 Background Music (Replace music.mp3 with your file) -->
+  <audio id="bgMusic" loop>
+    <source src="C:\Users\weakk\Music\I Like You So Much, Youll Know It (我多喜欢你你会知道)- A Love So Beautiful OST -Wang Junqi [English Cover].mp3" type="audio/mpeg">
+  </audio>
+
   <div class="floating-hearts">
     <span style="left: 10%; animation-delay: 0s;">❤️</span>
     <span style="left: 25%; animation-delay: 2s;">💕</span>
@@ -140,33 +153,43 @@
 
     <div class="counter" id="counter"></div>
 
-    <button onclick="showLove()">Read My Message</button>
+    <div class="buttons">
+      <button onclick="showLove()">Read My Message</button>
+      <button onclick="toggleMusic()">Play / Pause Music</button>
+      <button onclick="showPromise()">Our Promise</button>
+      <button onclick="surprise()">Surprise 💕</button>
+    </div>
 
     <p class="hidden-message" id="loveMessage">
-      Another month has passed with you,
-	And still my heart feels brand new.
-	In quiet smiles and late-night talks,
-	In every step, in all our walks.
+Another month has passed with you,
+And still my heart feels brand new.
+In quiet smiles and late-night talks.
 
-	We’re not perfect, that much is true,
-	But love feels easy when it’s you.
-	Through simple days and stormy weather,
-	I’d choose this life, us, always—together.
+Sorry if medyo busy si me kai you know how hard
+life is for students, I really appreciate you so much for understanding and being patient with me. 
+I know I can be a bit of a handful sometimes, but you always manage to make me feel loved and supported.
+Thank you for being my rock, my confidant, and my best friend. 
+I am so grateful to have you in my life, and I cherish every moment we spend together.
+I hope this relationship continues to grow stronger.
 
-	So here’s my heart, month after month,
-	In every now, in every “once.”
-	Happy monthsary, my love so true,
-	Every tomorrow starts with you. 💖 💖
+Happy monthsary, my love so true,
+Every tomorrow starts with you. 💖
     </p>
+
+    <p class="hidden-message" id="promiseMessage">
+I promise to keep choosing you.
+On easy days and hard ones too.
+To grow with you, laugh with you,
+And build a future side by side. ❤️
+    </p>
+
   </div>
 
   <script>
-    // CHANGE THIS TO YOUR START DATE (YYYY, MM-1, DD)
-    const startDate = new Date(2026, 1, 01);
+    const startDate = new Date(2026, 0, 1);
 
     function updateCounter() {
       const now = new Date();
-
       let months = (now.getFullYear() - startDate.getFullYear()) * 12;
       months += now.getMonth() - startDate.getMonth();
 
@@ -175,14 +198,40 @@
       }
 
       document.getElementById('counter').innerHTML =
-        `We’ve been together for <strong> ${months} </strong> month(s). ❤️`;
+        `We’ve been together for <strong>${months}</strong> month(s). ❤️`;
     }
 
     function showLove() {
       document.getElementById('loveMessage').style.display = 'block';
     }
 
+    function showPromise() {
+      document.getElementById('promiseMessage').style.display = 'block';
+    }
+
+    function toggleMusic() {
+      const music = document.getElementById("bgMusic");
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    }
+
+    function surprise() {
+      alert("You are my favorite notification, my safest place, and my best decision. 💕");
+    }
+
+    // Auto play after first click (browser restriction safe)
+    document.body.addEventListener("click", function () {
+      const music = document.getElementById("bgMusic");
+      if (music.paused) {
+        music.play().catch(() => {});
+      }
+    }, { once: true });
+
     updateCounter();
   </script>
+
 </body>
 </html>
