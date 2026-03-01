@@ -7,11 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Poppins', sans-serif;
@@ -23,6 +19,65 @@
       color: #fff;
       overflow-y: auto;
       padding: 40px 20px;
+    }
+
+    /* ── Tap-to-start overlay ── */
+    #musicPrompt {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 77, 109, 0.92);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      cursor: pointer;
+      animation: fadeIn 0.6s ease;
+    }
+
+    #musicPrompt h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 12px;
+      color: #fff;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    #musicPrompt p {
+      font-size: 1rem;
+      opacity: 0.9;
+      color: #fff;
+    }
+
+    #tapHeart {
+      font-size: 5rem;
+      animation: pulse 1.2s infinite;
+      margin-bottom: 20px;
+    }
+
+    /* ── Music status bar ── */
+    #musicBar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      opacity: 0.85;
+      margin-bottom: 18px;
+    }
+
+    .music-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #fff;
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
     }
 
     .card {
@@ -38,17 +93,8 @@
       z-index: 2;
     }
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      margin-bottom: 8px;
-    }
-
-    h2 {
-      font-weight: 300;
-      font-size: 1.1rem;
-      margin-bottom: 22px;
-    }
+    h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin-bottom: 8px; }
+    h2 { font-weight: 300; font-size: 1.1rem; margin-bottom: 22px; }
 
     .heart {
       font-size: 4rem;
@@ -56,17 +102,9 @@
       margin: 15px 0 25px;
     }
 
-    p {
-      font-size: 1.05rem;
-      line-height: 1.8;
-      margin-bottom: 25px;
-    }
+    p { font-size: 1.05rem; line-height: 1.8; margin-bottom: 25px; }
 
-    .counter {
-      font-size: 1.15rem;
-      margin-bottom: 30px;
-      font-weight: 500;
-    }
+    .counter { font-size: 1.15rem; margin-bottom: 30px; font-weight: 500; }
 
     .buttons {
       display: flex;
@@ -87,10 +125,9 @@
       box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
     }
 
-    button:hover {
-      transform: translateY(-3px) scale(1.05);
-      background: #ff3355;
-    }
+    button:hover { transform: translateY(-3px) scale(1.05); background: #ff3355; }
+
+    #musicBtn { background: #d63f5e; }
 
     .hidden-message {
       display: none;
@@ -127,10 +164,38 @@
 </head>
 <body>
 
-  <!-- 🎵 Background Music (Replace music.mp3 with your file) -->
-  <audio id="bgMusic" loop>
-    <source src="https://raw.githubusercontent.com/Brian0956/monthsary/5a70e88b060f42bd7a24c489aa78a8090ec8c059/I%20Like%20You%20So%20Much%2C%20Youll%20Know%20It%20(%E6%88%91%E5%A4%9A%E5%96%9C%E6%AC%A2%E4%BD%A0%E4%BD%A0%E4%BC%9A%E7%9F%A5%E9%81%93)-%20A%20Love%20So%20Beautiful%20OST%20-Wang%20Junqi%20%5BEnglish%20Cover%5D.mp3" type="audio/mpeg">
+  <!--
+    ════════════════════════════════════════════════════════
+    MUSIC FILE — GitHub Raw URL
+    ════════════════════════════════════════════════════════
+    The audio loads directly from your GitHub repo using
+    raw.githubusercontent.com. Two things make this work:
+
+      1. crossorigin="anonymous" — tells the browser it's
+         allowed to load audio from a different domain (GitHub).
+         Without this, many browsers silently block the audio.
+
+      2. The URL uses the COMMIT HASH instead of a branch name
+         so the file is always found even if the branch changes.
+
+    If you ever rename or re-upload the audio file, update the
+    src URL below to match the new commit hash or use "main":
+      https://raw.githubusercontent.com/Brian0956/monthsary/main/I%20Like%20You%20So%20Much%2C%20Youll%20Know%20It.mp3
+    ════════════════════════════════════════════════════════
+  -->
+  <audio id="bgMusic" loop crossorigin="anonymous" preload="auto">
+    <source
+      src="https://raw.githubusercontent.com/Brian0956/monthsary/b4433e975a7736164a86599a8ce1c0baae8f7a82/I%20Like%20You%20So%20Much%2C%20Youll%20Know%20It.mp3"
+      type="audio/mpeg"
+    />
   </audio>
+
+  <!-- Tap-to-start overlay — required to bypass browser autoplay policy -->
+  <div id="musicPrompt" onclick="startExperience()">
+    <div id="tapHeart">❤️</div>
+    <h2>Tap to open your surprise 💕</h2>
+    <p>🎵 Sound on for the full experience</p>
+  </div>
 
   <div class="floating-hearts">
     <span style="left: 10%; animation-delay: 0s;">❤️</span>
@@ -146,6 +211,12 @@
 
     <div class="heart">❤️</div>
 
+    <!-- Live music indicator -->
+    <div id="musicBar">
+      <div class="music-dot"></div>
+      <span id="musicLabel">🎵 Now playing…</span>
+    </div>
+
     <p>
       Every month with you feels like a small celebration of love.
       Thank you for choosing me, for loving me, and for making ordinary days feel special.
@@ -155,7 +226,7 @@
 
     <div class="buttons">
       <button onclick="showLove()">Read My Message</button>
-      <button onclick="toggleMusic()">Play / Pause Music</button>
+      <button id="musicBtn" onclick="toggleMusic()">⏸ Pause Music</button>
       <button onclick="showPromise()">Our Promise</button>
       <button onclick="surprise()">Surprise 💕</button>
     </div>
@@ -187,19 +258,59 @@ And build a future side by side. ❤️
 
   <script>
     const startDate = new Date(2026, 0, 1);
+    const music = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");
+    const musicLabel = document.getElementById("musicLabel");
+    const musicDot = document.querySelector(".music-dot");
 
-    function updateCounter() {
-      const now = new Date();
-      let months = (now.getFullYear() - startDate.getFullYear()) * 12;
-      months += now.getMonth() - startDate.getMonth();
+    /* ── Dismiss overlay and start music on first tap ── */
+    function startExperience() {
+      const overlay = document.getElementById("musicPrompt");
+      overlay.style.transition = "opacity 0.5s ease";
+      overlay.style.opacity = "0";
+      setTimeout(() => overlay.style.display = "none", 500);
 
-      if (now.getDate() < startDate.getDate()) {
-        months--;
-      }
-
-      document.getElementById('counter').innerHTML =
-        `We’ve been together for <strong>${months}</strong> month(s). ❤️`;
+      music.play()
+        .then(() => {
+          setPlaying(true);
+        })
+        .catch((err) => {
+          console.warn("Audio play failed:", err);
+          setPlaying(false);
+          musicLabel.textContent = "⚠️ Tap ▶ Play Music to start";
+        });
     }
+
+    /* ── Play / Pause toggle button ── */
+    function toggleMusic() {
+      if (music.paused) {
+        music.play().then(() => setPlaying(true));
+      } else {
+        music.pause();
+        setPlaying(false);
+      }
+    }
+
+    function setPlaying(isPlaying) {
+      if (isPlaying) {
+        musicBtn.textContent = "⏸ Pause Music";
+        musicLabel.textContent = "🎵 Now playing…";
+        musicDot.style.animationPlayState = "running";
+      } else {
+        musicBtn.textContent = "▶ Play Music";
+        musicLabel.textContent = "⏸ Music paused";
+        musicDot.style.animationPlayState = "paused";
+        musicDot.style.opacity = "0.3";
+      }
+    }
+
+    /* ── Sync button state with audio events ── */
+    music.addEventListener("play",  () => setPlaying(true));
+    music.addEventListener("pause", () => setPlaying(false));
+    music.addEventListener("error", () => {
+      musicLabel.textContent = "⚠️ Could not load music — check the file in GitHub";
+      musicDot.style.animationPlayState = "paused";
+    });
 
     function showLove() {
       document.getElementById('loveMessage').style.display = 'block';
@@ -209,26 +320,18 @@ And build a future side by side. ❤️
       document.getElementById('promiseMessage').style.display = 'block';
     }
 
-    function toggleMusic() {
-      const music = document.getElementById("bgMusic");
-      if (music.paused) {
-        music.play();
-      } else {
-        music.pause();
-      }
-    }
-
     function surprise() {
       alert("You are my favorite notification, my safest place, and my best decision. 💕");
     }
 
-    // Auto play after first click (browser restriction safe)
-    document.body.addEventListener("click", function () {
-      const music = document.getElementById("bgMusic");
-      if (music.paused) {
-        music.play().catch(() => {});
-      }
-    }, { once: true });
+    function updateCounter() {
+      const now = new Date();
+      let months = (now.getFullYear() - startDate.getFullYear()) * 12;
+      months += now.getMonth() - startDate.getMonth();
+      if (now.getDate() < startDate.getDate()) months--;
+      document.getElementById('counter').innerHTML =
+        `We've been together for <strong>${months}</strong> month(s). ❤️`;
+    }
 
     updateCounter();
   </script>
