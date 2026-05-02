@@ -5,15 +5,21 @@ onload = () => {
   }, 1000);
 };
 
-window.addEventListener("click", () => {
-  const music = document.getElementById("bg-music");
-  music.play();
-});
-
 const music = document.getElementById("bg-music");
 
-window.addEventListener("click", () => {
-  music.muted = false;
-  music.volume = 0.3; // soft volume
+// Try to autoplay unmuted first (works if browser allows it)
+music.muted = false;
+music.volume = 0.3;
+music.play().catch(() => {
+  // Browser blocked it — wait for first click then unmute
+  music.muted = true;
   music.play();
-});
+
+  const unlock = () => {
+    music.muted = false;
+    music.volume = 0.3;
+    document.removeEventListener("click", unlock);
+  };
+
+  document.addEventListener("click", unlock);
+  });
